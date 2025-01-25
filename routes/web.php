@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserController;
 
 // Clear Cache of Permissions for the admin
 Route::get('/forget-cached-permissions', function () {
@@ -21,6 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/edit-user/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/update-user/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/change-status/{userId}', [UserController::class, 'changeStatus'])->name('users.change_status');
+    Route::delete('/delete-user/{userId}', [UserController::class, 'delete'])->name('users.delete');
 
     // ROLES AND PERMISSIONS
     Route::get('/roles', [RolePermissionController::class, 'showAssignPermissionsForm'])->name('roles.index');

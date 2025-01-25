@@ -1,44 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-</head>
-<body>
+@extends('master')
 
-<div class="container mt-5">
-    <h2>User List</h2>
-    
-    <a href="{{ route('users.export.pdf') }}" class="btn btn-primary mb-3">Export as PDF</a>
+@section('users', 'active')
 
-    <table class="table table-bordered" id="users-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-    </table>
+@section('content')
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row g-4">
+        <!-- Search Form -->
+        <form method="GET" action="/users" class="mb-3">
+            <div class="row">
+                <div class="col-md-5">
+                    <input 
+                        type="text" 
+                        name="name" 
+                        class="form-control" 
+                        placeholder="Search by Name" 
+                        value="{{ request('name') }}"
+                    >
+                </div>
+                <div class="col-md-5">
+                    <input 
+                        type="text" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="Search by Email" 
+                        value="{{ request('email') }}"
+                    >
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Users Table -->
+        <div class="card">
+            <h5 class="card-header">All Users</h5>
+            <div class="table-responsive text-nowrap">
+                <table class="table" id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Change Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0" id="users-body">
+                        @foreach ($users as $user)
+                        <tr>
+                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ $user->name }}</strong></td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <span class="badge bg-label-primary me-1">
+                                    @if(!$user->deactivated)
+                                        ACTIVE
+                                    @else
+                                        NOT ACTIVE
+                                    @endif
+                                </span>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="{{ route('users.edit', $user->id) }}">
+                                    <i class="bx bx-edit-alt"></i> Edit
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ route('users.delete', $user->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">
+                                        <i class="bx bx-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-success" href="{{ route('users.change_status', $user->id) }}">
+                                    @if(!$user->deactivated)
+                                        DEACTIVATE
+                                    @else
+                                        REACTIVATE
+                                    @endif
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('users.data') }}",
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' }
-            ]
-        });
-    });
-</script>
-
-</body>
-</html>
+@endsection
