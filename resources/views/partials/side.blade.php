@@ -69,14 +69,23 @@
 
     
     <ul class="menu-inner py-1">
-      {{-- @if (auth()->user() && auth()->user()->can('show_permissions')) --}}
+      @if (auth()->user() && auth()->user()->can('list_plans'))
           <li class="menu-item @yield('plans')">
               <a href="{{ route('subscriptions.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-home-circle"></i>
                   <div data-i18n="Analytics">Plans</div>
               </a>
           </li>
-      {{-- @endif --}}
+      @endif
+
+      @if (auth()->user() && auth()->user()->can('list_users'))
+            <li class="menu-item @yield('users')">
+              <a href="{{ route('users.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Users</div>
+              </a>
+          </li>
+      @endif
 
       @if (auth()->user() && auth()->user()->can('show_permissions'))
           <li class="menu-item @yield('roles')">

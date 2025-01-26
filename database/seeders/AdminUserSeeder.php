@@ -15,7 +15,10 @@ class AdminUserSeeder extends Seeder
             'show_permissions',
             'manage_permissions',
             'list_plans',
-            'manage_plans'
+            'manage_plans',
+            'list_users',
+            'manage_users',
+            'delete_users'
         ];
 
         $userPermissions = [

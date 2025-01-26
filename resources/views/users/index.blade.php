@@ -44,9 +44,17 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            @if (auth()->user() && auth()->user()->can('manage_users'))
                             <th>Edit</th>
+                            @endif
+
+                            @if (auth()->user() && auth()->user()->can('delete_users'))
                             <th>Delete</th>
+                            @endif
+
+                            @if (auth()->user() && auth()->user()->can('manage_users'))
                             <th>Change Status</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="users-body">
@@ -63,11 +71,16 @@
                                     @endif
                                 </span>
                             </td>
+
+                        @if (auth()->user() && auth()->user()->can('manage_users'))
                             <td>
                                 <a class="btn btn-sm btn-primary" href="{{ route('users.edit', $user->id) }}">
                                     <i class="bx bx-edit-alt"></i> Edit
                                 </a>
                             </td>
+                        @endif
+
+                        @if (auth()->user() && auth()->user()->can('delete_users'))
                             <td>
                                 <form action="{{ route('users.delete', $user->id) }}" method="POST" style="display:inline;">
                                     @csrf
@@ -77,6 +90,9 @@
                                     </button>
                                 </form>
                             </td>
+                        @endif
+
+                        @if (auth()->user() && auth()->user()->can('manage_users'))
                             <td>
                                 <a class="btn btn-sm btn-success" href="{{ route('users.change_status', $user->id) }}">
                                     @if(!$user->deactivated)
@@ -86,7 +102,9 @@
                                     @endif
                                 </a>
                             </td>
+                        @endif
                         </tr>
+                        
                         @endforeach
                     </tbody>
                 </table>

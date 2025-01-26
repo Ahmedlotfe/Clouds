@@ -1,0 +1,68 @@
+# Laravel Subscription Management System
+
+This is a Laravel application for managing user registrations, subscription plans, and roles and permissions. The application allows users to register, subscribe to payment plans, and download invoices as PDFs. Admins can manage users, roles, and permissions effectively.
+
+## Features
+
+- **User Registration**: Users can register using their username, email, and password.
+- **Payment Plans**: Users can choose from various payment plans.
+- **Subscription Management**: Users can subscribe to payment plans.
+- **Roles and Permissions**: Integrated with Spatie for managing roles and permissions.
+- **Admin User Seeder**: 
+  - Creates roles and permissions.
+  - Creates an admin user with all permissions.
+  - Creates a regular user with limited permissions to subscribe to plans.
+- **Automatic Role Assignment**: Users are assigned the `user` role upon registration.
+- **Command for Subscription Expiry**: 
+  - Command `subscriptions:check-expiry` checks daily if a user's plan has expired.
+  - Reassigns the `user` role to expired users, allowing them to resubscribe.
+- **Admin Capabilities**:
+  - View, update, delete, deactivate, and reactivate any user.
+  - View all roles and permissions and manage them accordingly.
+  - Search users by name or email.
+- **User Login**: Users can log in to the application, except for deactivated users.
+- **Invoice Download**: Users can download their subscription invoice as a PDF.
+
+## Requirements
+
+- PHP >= 7.3
+- Composer
+- Laravel >= 8.x
+- MySQL or other supported database
+
+## Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/Ahmedlotfe/Clouds.git
+   cd Clouds
+
+2. **Install dependencies**:
+
+    composer install
+
+3. **Set up your environment file**:
+
+    cp .env.example .env
+
+4. **Generate the application key**:
+    php artisan key:generate
+
+5. **Run migrations**:
+    php artisan migrate
+
+6. **Seed the database**:
+    php artisan db:seed --class=AdminUserSeeder
+    php artisan db:seed --class=PlanSeeder
+
+7. **Set up the scheduler**:
+    php artisan subscriptions:check-expiry
+
+## Usage
+- Access the application via your web browser at http://127.0.0.1:8000/.
+- Admin Panel: Log in as the admin user to manage users and roles.
+- User Registration: New users can register to access the application.
+- Subscription: Users can choose and subscribe to payment plans.
+- Invoice Download: After subscribing, users can download their invoices as PDFs from their dashboard.
+

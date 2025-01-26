@@ -22,9 +22,12 @@
                     <p><strong>Status:</strong> Paid</p>
                     <p><strong>Subscription Duration:</strong> {{ $order->plan->duration }} Days</p>
                     <p><strong>Subscription Start Date:</strong> {{ now()->toDateString() }}</p>
+                    <p><strong>Subscription End Date:</strong> {{ now()->addDays($order->plan->duration)->toDateString() }}</p>
                 </div>
                 <div class="card-footer text-muted">
                     <p>If you have any questions, feel free to contact our support team.</p>
+                    <!-- Download PDF Button -->
+                    <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-primary btn-block">Download Invoice as PDF</a>
                 </div>
             </div>
         </div>

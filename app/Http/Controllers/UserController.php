@@ -7,6 +7,39 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware(
+            'permission:list_users',
+            [
+                'only' => [
+                    'index',
+                    'edit'
+                ]
+            ]
+        );
+
+        $this->middleware(
+            'permission:manage_users',
+            [
+                'only' => [
+                    'update',
+                    'changeStatus'
+                ]
+            ]
+        );
+
+        $this->middleware(
+            'permission:delete_users',
+            [
+                'only' => [
+                    'delete'
+                ]
+            ]
+        );
+    }
+
+
     public function index(Request $request)
     {
         $query = User::query();
